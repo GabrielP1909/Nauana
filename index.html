@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feliz Aniversário, Nau!</title>
+    <style>
+        :root {
+            --primary: #ff7f50; /* Laranja escuro */
+            --secondary: #ffcc80; /* Laranja claro */
+            --accent: #ff4081; /* Cor de destaque */
+            --text-color: #333;
+            --background-color: #fff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            overflow-x: hidden; /* Evita rolagem horizontal */
+            position: relative;
+            min-height: 100vh; /* Garante que o body ocupe a altura total da viewport */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            width: 90%; /* Largura responsiva */
+            max-width: 720px;
+            margin: 20px auto; /* Margem ajustada para telas menores */
+            background: var(--background-color);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s forwards;
+            box-sizing: border-box; /* Inclui padding e borda na largura total */
+            z-index: 10; /* Garante que o card fique acima dos enfeites */
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5em; /* Unidade relativa */
+            margin: 0;
+            color: var(--accent);
+            text-align: center; /* Centraliza o título */
+        }
+
+        h2 {
+            font-size: 1.5em; /* Unidade relativa */
+            margin: 10px 0;
+            color: var(--text-color);
+            text-align: center; /* Centraliza o subtítulo */
+        }
+
+        p {
+            line-height: 1.6;
+            color: var(--text-color);
+            margin: 20px 0;
+            text-align: justify; /* Justifica o texto para melhor leitura */
+        }
+
+        .decorative-line {
+            border-top: 2px dotted var(--accent);
+            margin: 20px auto; /* Centraliza a linha */
+            width: 80%; /* Largura responsiva */
+        }
+
+        .footer {
+            display: flex;
+            flex-wrap: wrap; /* Permite que os botões quebrem a linha */
+            justify-content: center; /* Centraliza os botões */
+            gap: 15px; /* Espaçamento entre os botões */
+            margin-top: 30px;
+        }
+
+        button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-size: 1em; /* Tamanho de fonte responsivo */
+            flex-grow: 1; /* Permite que os botões cresçam para preencher o espaço */
+            max-width: 200px; /* Limita a largura máxima dos botões */
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0.8;
+            animation: confettiFall linear forwards;
+            pointer-events: none; /* Garante que o confete não interfira com cliques */
+            z-index: 5; /* Abaixo do card */
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Toast message for copy confirmation */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        /* --- Estilos para os enfeites ao redor do card --- */
+        .decoration {
+            position: absolute;
+            opacity: 0.7;
+            pointer-events: none;
+            z-index: 1; /* Abaixo do card e confetes */
+        }
+
+        .balloon {
+            width: 50px;
+            height: 70px;
+            background-color: var(--accent);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: floatBalloon 8s ease-in-out infinite alternate;
+            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.2);
+        }
+
+        .balloon::before {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 20px;
+            background-color: rgba(0,0,0,0.3);
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .star {
+            width: 0;
+            height: 0;
+            border-right: 15px solid transparent;
+            border-left: 15px solid transparent;
+            border-bottom: 25px solid gold;
+            transform: rotate(35deg);
+            animation: twinkleStar 3s ease-in-out infinite alternate;
+        }
+
+        .star::before {
+            content: '';
+            width: 0;
+            height: 0;
+            border-right: 15px solid transparent;
+            border-left: 15px solid transparent;
+            border-bottom: 25px solid gold;
+            transform: rotate(-70deg);
+            position: absolute;
+            top: -15px;
+            left: -15px;
+        }
+
+        @keyframes floatBalloon {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+
+        @keyframes twinkleStar {
+            0%, 100% { opacity: 0.7; transform: scale(1) rotate(35deg); }
+            50% { opacity: 1; transform: scale(1.2) rotate(40deg); }
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .card {
+                padding: 30px;
+                margin: 15px auto;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            h2 {
+                font-size: 1.3em;
+            }
+            p {
+                font-size: 0.95em;
+            }
+            .footer button {
+                padding: 10px 15px;
+                font-size: 0.9em;
+            }
+            /* Ajuste para enfeites em telas menores */
+            .balloon {
+                width: 40px;
+                height: 60px;
+            }
+            .star {
+                border-right: 10px solid transparent;
+                border-left: 10px solid transparent;
+                border-bottom: 20px solid gold;
+            }
+            .star::before {
+                border-right: 10px solid transparent;
+                border-left: 10px solid transparent;
+                border-bottom: 20px solid gold;
+                top: -10px;
+                left: -10px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                padding: 20px;
+                margin: 10px auto;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            h2 {
+                font-size: 1.1em;
+            }
+            p {
+                font-size: 0.9em;
+            }
+            .footer {
+                flex-direction: column; /* Botões empilhados em telas muito pequenas */
+                align-items: stretch; /* Estica os botões para a largura total */
+            }
+            .footer button {
+                max-width: 100%; /* Ocupa a largura total disponível */
+            }
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            h2 {
+                font-size: 1em;
+            }
+            p {
+                font-size: 0.85em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Feliz Aniversário, Nau!</h1>
+        <h2>Um dia especial para uma amiga especial!</h2>
+        <div class="decorative-line"></div>
+        <p>
+            Oii Nau, tudo bem contigo? Hoje é teu diaaa, e claro que eu não ia deixar passar em branco, tinha que vir aqui te dar um FELIZ ANIVERSÁRIOOO 🎉🥳
+        </p>
+        <p>
+            Tu é uma pessoa incrível de ter por perto, já te falei isso, mas é sempre bom reforçar. Tu tem um jeito único de fazer todo mundo se sentir bem, sempre trazendo leveza, rindo, brincando… até nos dias chatos tu consegue deixar tudo mais divertido. E olha que já tivemos nossas brigas, mas nossa amizade é forte o bastante pra gente sempre voltar a se falar e se resolver, né?
+        </p>
+        <p>
+            Gosto muito de ti e do teu jeito verdadeira, divertida e com um coração gigante que faz diferença na vida de quem te conhece. É muito massa poder chamar alguém como tu de amiga.
+        </p>
+        <p>
+            Então, nesse novo ciclo que tá começando pra ti, desejo tudo de bom e mais um pouco! Que tu tenha muitos momentos bons, risadas sem fim, gente boa do teu lado e tudo aquilo que te faça feliz.
+        </p>
+        <p>
+            Parabéns, Nau! Aproveita muito teu dia e lembra que pode contar comigo pra tudo, sempre! ✨❤️
+        </p>
+        <p>Com carinho, <span id="yourName">The best</span></p>
+        <div class="footer">
+            <button id="celebrateBtn">Comemorar 🎉</button>
+            <button id="copyBtn" aria-label="Copiar mensagem">Copiar mensagem</button>
+            <button id="printBtn" aria-label="Imprimir/Salvar em PDF">Imprimir/Salvar em PDF</button>
+        </div>
+    </div>
+
+    <!-- Enfeites ao redor do card -->
+    <div class="decoration balloon" style="top: 10%; left: 5%; background-color: #ff6347;"></div>
+    <div class="decoration star" style="top: 20%; right: 8%;"></div>
+    <div class="decoration balloon" style="bottom: 15%; left: 12%; background-color: #ffd700;"></div>
+    <div class="decoration star" style="bottom: 5%; left: 25%;"></div>
+    <div class="decoration balloon" style="top: 5%; right: 15%; background-color: #9370db;"></div>
+    <div class="decoration star" style="top: 30%; left: 18%;"></div>
+    <div class="decoration balloon" style="bottom: 10%; right: 5%; background-color: #3cb371;"></div>
+    <div class="decoration star" style="bottom: 20%; right: 20%;"></div>
+    <!-- Mais alguns para preencher -->
+    <div class="decoration balloon" style="top: 40%; left: 3%; background-color: #00bfff;"></div>
+    <div class="decoration star" style="top: 50%; right: 3%;"></div>
+
+
+    <script>
+        document.getElementById('celebrateBtn').addEventListener('click', function() {
+            // Create 100 confetti pieces
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                
+                // Random position and properties
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                confetti.style.animationDelay = Math.random() * 2 + 's'; /* Atraso para confetes aparecerem em momentos diferentes */
+                
+                // Random shapes
+                const shapes = ['square', 'circle', 'triangle'];
+                const randomShape = shapes[Math.floor(Math.random() * shapes.length)];
+                if (randomShape === 'circle') {
+                    confetti.style.borderRadius = '50%';
+                } else if (randomShape === 'triangle') {
+                    confetti.style.width = '0';
+                    confetti.style.height = '0';
+                    confetti.style.borderLeft = `${Math.random() * 8 + 4}px solid transparent`;
+                    confetti.style.borderRight = `${Math.random() * 8 + 4}px solid transparent`;
+                    confetti.style.borderBottom = `${Math.random() * 16 + 8}px solid ` + confetti.style.backgroundColor;
+                    confetti.style.backgroundColor = 'transparent'; /* Triangles use border for color */
+                }
+                
+                // Add confetti to body
+                document.body.appendChild(confetti);
+                
+                // Remove after animation completes
+                setTimeout(() => {
+                    document.body.removeChild(confetti);
+                }, parseFloat(confetti.style.animationDuration) * 1000 + parseFloat(confetti.style.animationDelay) * 1000 + 500); // Ensure removal after full animation
+            }
+        });
+
+        // Copy message function
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            const cardElement = document.querySelector('.card');
+            // Clone the card element to manipulate its content without affecting the original display
+            const tempCard = cardElement.cloneNode(true);
+
+            // Remove the footer from the cloned content to avoid copying buttons
+            const footer = tempCard.querySelector('.footer');
+            if (footer) {
+                footer.remove();
+            }
+            // Remove the "Com carinho, [Seu Nome]" line as it's dynamic
+            const yourNameSpan = tempCard.querySelector('#yourName');
+            if (yourNameSpan && yourNameSpan.parentNode) {
+                yourNameSpan.parentNode.remove();
+            }
+
+            const text = tempCard.innerText;
+
+            navigator.clipboard.writeText(text.trim()).then(() => { // Use trim() to remove leading/trailing whitespace
+                const toast = document.createElement('div');
+                toast.innerText = 'Copiado!';
+                toast.className = 'toast'; // Add toast class for styling
+                document.body.appendChild(toast);
+                // Show toast with a slight delay for transition
+                setTimeout(() => {
+                    toast.classList.add('show');
+                }, 10); 
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    toast.addEventListener('transitionend', () => {
+                        document.body.removeChild(toast);
+                    }, { once: true });
+                }, 2000);
+            }).catch(err => {
+                console.error('Erro ao copiar texto: ', err);
+                alert('Não foi possível copiar o texto. Por favor, tente novamente.');
+            });
+        });
+
+        // Print function
+        document.getElementById('printBtn').addEventListener('click', function() {
+            window.print();
+        });
+    </script>
+</body>
+</html>
