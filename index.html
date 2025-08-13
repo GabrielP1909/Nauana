@@ -104,18 +104,20 @@
         }
 
         .confetti {
-            position: absolute;
+            position: fixed; /* Alterado para fixed para cobrir toda a viewport */
             width: 10px;
             height: 10px;
             opacity: 0.8;
             animation: confettiFall linear forwards;
             pointer-events: none; /* Garante que o confete não interfira com cliques */
-            z-index: 5; /* Abaixo do card */
+            z-index: 11; /* Aumentado para ficar acima do card */
+            /* Adicionado top inicial negativo para garantir que comece fora da tela */
+            top: -5vh; 
         }
 
         @keyframes confettiFall {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; } /* Já começa com top negativo, então translateY(0) é o ponto de partida */
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; } /* Cai para 10vh abaixo da tela */
         }
 
         /* Toast message for copy confirmation */
@@ -326,7 +328,8 @@
                 confetti.className = 'confetti';
                 
                 // Random position and properties
-                confetti.style.left = Math.random() * 100 + 'vw';
+                // Gerar 'left' em uma faixa maior para que comece fora das bordas laterais
+                confetti.style.left = (Math.random() * 120 - 10) + 'vw'; // De -10vw a 110vw
                 confetti.style.width = Math.random() * 10 + 5 + 'px';
                 confetti.style.height = Math.random() * 10 + 5 + 'px';
                 confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
